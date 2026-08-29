@@ -19,7 +19,7 @@ final class CombatController extends Controller
         $team = $this->team($request);
         $items = app(CombatQuery::class)->visible($team?->getAttribute('tenant_id'), $team?->getKey() === null ? null : (string) $team->getKey())->latest()->paginate(min($request->integer('page_size', 25), 100));
 
-        return response()->json(['data' => $items->through(fn (Model $battle, int $key): array => $this->resource($battle))]);
+        return response()->json($items->through(fn (Model $battle, int $key): array => $this->resource($battle)));
     }
 
     public function show(Request $request, CombatBattle $battle): JsonResponse
